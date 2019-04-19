@@ -35,9 +35,10 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(134, 79);
+            this.btnStart.Location = new System.Drawing.Point(179, 97);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.Size = new System.Drawing.Size(100, 28);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -49,34 +50,37 @@
             this.DateSform1.CustomFormat = "dd.MM.yyyy";
             this.DateSform1.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.DateSform1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DateSform1.Location = new System.Drawing.Point(219, 22);
+            this.DateSform1.Location = new System.Drawing.Point(292, 27);
+            this.DateSform1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DateSform1.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.DateSform1.Name = "DateSform1";
-            this.DateSform1.Size = new System.Drawing.Size(99, 22);
+            this.DateSform1.Size = new System.Drawing.Size(131, 26);
             this.DateSform1.TabIndex = 3;
-            this.DateSform1.Value = new System.DateTime(2018, 6, 18, 13, 45, 9, 0);
+            this.DateSform1.Value = new System.DateTime(2019, 4, 19, 0, 0, 0, 0);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(11, 25);
+            this.label1.Location = new System.Drawing.Point(55, 31);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(184, 16);
+            this.label1.Size = new System.Drawing.Size(104, 20);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Select status update date";
+            this.label1.Text = "Select date";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 122);
+            this.ClientSize = new System.Drawing.Size(449, 150);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.DateSform1);
             this.Controls.Add(this.btnStart);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Nissan Project Status Changer";
+            this.Text = "GL+ Project";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

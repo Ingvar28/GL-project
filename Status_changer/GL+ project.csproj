@@ -7,7 +7,7 @@
     <ProjectGuid>{20BF727F-A0B9-4758-8E1C-5108CA825203}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Status_changer</RootNamespace>
-    <AssemblyName>Status_changer</AssemblyName>
+    <AssemblyName>GL+ project</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
