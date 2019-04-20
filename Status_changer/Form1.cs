@@ -379,6 +379,7 @@ namespace Status_changer
                         host.Send("<F4>");
 
                         ForAwaitRow(9);
+                        Thread.Sleep(600);
                         host.Send(RecName); // Receaver Name
                         Thread.Sleep(600);
                         host.Send("<TAB>");
