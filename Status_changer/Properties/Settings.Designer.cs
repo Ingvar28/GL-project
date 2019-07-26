@@ -63,7 +63,7 @@ namespace Status_changer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C346RSR")]
+        [global::System.Configuration.DefaultSettingValueAttribute("a689syv")]
         public string loginMF {
             get {
                 return ((string)(this["loginMF"]));
@@ -75,7 +75,7 @@ namespace Status_changer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Mainf918")]
+        [global::System.Configuration.DefaultSettingValueAttribute("mar2019")]
         public string pwdMF {
             get {
                 return ((string)(this["pwdMF"]));

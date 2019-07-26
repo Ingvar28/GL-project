@@ -12,10 +12,10 @@
       <Value Profile="(Default)">Data Source=RUMOWS12;Initial Catalog=InvoicesStatuses;MultipleActiveResultSets=true;user=mf;password=mf;</Value>
     </Setting>
     <Setting Name="loginMF" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C346RSR</Value>
+      <Value Profile="(Default)">a689syv</Value>
     </Setting>
     <Setting Name="pwdMF" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Mainf918</Value>
+      <Value Profile="(Default)">mar2019</Value>
     </Setting>
   </Settings>
 </SettingsFile>

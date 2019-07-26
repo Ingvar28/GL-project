@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Status_changer")]
+[assembly: AssemblyTitle("GL+ project")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TNT Express ICS")]
 [assembly: AssemblyProduct("Status_changer")]
-[assembly: AssemblyCopyright("Copyright © TNT Express ICS 2017")]
+[assembly: AssemblyCopyright("Copyright © TNT Express ICS 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
