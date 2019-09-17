@@ -145,16 +145,15 @@ namespace Status_changer
                 host.Send("PK01");
                 logger.Debug("PK01", this.Text); //LOG
                 host.Send("<ENTER>");
+                
+                if (teemApp.CurrentSession.Display.CursorCol == 17)
+                {
+                    host.Send("<F12>");
+                }
 
                 //Проверка на возможность доступа в PK01
                 var PK01 = "";
                 PK01= disp.ScreenData[73, 2, 4];
-
-                if (teemApp.CurrentSession.Display.CursorCol == 17)
-                {
-                    host.Send("<F12>");
-
-                }
 
                 if (PK01 != "PK01")
                 {
@@ -208,13 +207,13 @@ namespace Status_changer
                     ////////////////////////////////////////////////////////////////Объявление переменных/////////////////////////////////////////////////////////////////////////
 
                     //CName - Caller Name
-                    var CName = "0";
+                    //var CName = "0";
                     //TelNo - Telephone No
-                    var TelNo = "0";
+                    //var TelNo = "0";
                                       
                                                          
                     //Select - Selection
-                    var Select = "41";
+                    //var Select = "41";
                     
 
                     //Con - Connote из колонки CN Number
@@ -618,44 +617,45 @@ namespace Status_changer
 
                     /////////////////////////////////////////////////////////////Data Entry//////////////////////////////////////////////////////////////////////////
 
-                    ForAwait(20, 1, "Customer Service System");
-                    Thread.Sleep(600);
-                    host.Send(CName);// 0
+                    //ForAwait(20, 1, "Customer Service System");
+                    //Thread.Sleep(600);
+                    //host.Send(CName);// 0
                     
-                    Thread.Sleep(100); //костыль
-                    host.Send("<TAB>");
-                    host.Send(TelNo);// 0 
-                    Thread.Sleep(100); //костыль
-                    host.Send("<TAB>");
-                    host.Send(TelNo);// 0 
-                    Thread.Sleep(100); //костыль
-                    host.Send("<TAB>");
+                    //Thread.Sleep(100); //костыль
+                    //host.Send("<TAB>");
+                    //host.Send(TelNo);// 0 
+                    //Thread.Sleep(100); //костыль
+                    //host.Send("<TAB>");
+                    //host.Send(TelNo);// 0 
+                    //Thread.Sleep(100); //костыль
+                    //host.Send("<TAB>");
 
-                    ForAwaitCol(19);
-                    Thread.Sleep(600);
-                    host.Send(SrCrit);
-                    logger.Debug("SrCrit:" + SrCrit, this.Text); //LOG
-                    Thread.Sleep(500);
-                    host.Send("<ENTER>");
-                    Thread.Sleep(1000);
-                    host.Send("<F12>");
+                    //ForAwaitCol(19);
+                    //Thread.Sleep(600);
+                    //host.Send(SrCrit);
+                    //logger.Debug("SrCrit:" + SrCrit, this.Text); //LOG
+                    //Thread.Sleep(500);
+                    //host.Send("<ENTER>");
+                    //Thread.Sleep(1000);
+                    //host.Send("<F12>");
 
-                    ForAwaitCol(13);
-                    Thread.Sleep(600);
-                    host.Send(Select);// =41                        
-                    host.Send("<ENTER>");
+                    ////ForAwaitCol(13);
+                    ////Thread.Sleep(600);
+                    ////host.Send(Select);// =41                        
+                    ////host.Send("<ENTER>");
 
 
-                    ForAwait(31, 8, "SS Status");
-                    Thread.Sleep(600);
-                    host.Send(SSstat);// = BK                        
-                    Thread.Sleep(100);
+                    //ForAwait(31, 8, "SS Status");
+                    //Thread.Sleep(600);
+                    //host.Send(SSstat);// = BK                        
+                    //Thread.Sleep(100);
 
-                    ForAwaitCol(62);
+                    ForAwaitCol(8);
                     Thread.Sleep(600);
                     host.Send(Con);// CN Number
                     logger.Debug("Con:" + Con, this.Text); //LOG
-                    host.Send("<TAB>");
+                    host.Send("<ENTER>");
+
                     ForAwaitCol(7);
                     host.Send("<TAB>");
 
