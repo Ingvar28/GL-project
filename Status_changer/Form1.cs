@@ -141,9 +141,27 @@ namespace Status_changer
                 Thread.Sleep(500);
                 if (disp.CursorRow != 2)
 
-                host.Send("JK04");
-                logger.Debug("JK04", this.Text); //LOG
+
+                host.Send("PK01");
+                logger.Debug("PK01", this.Text); //LOG
                 host.Send("<ENTER>");
+
+                //Проверка на возможность доступа в PK01
+                var PK01 = "";
+                PK01= disp.ScreenData[73, 2, 4];
+
+                if (teemApp.CurrentSession.Display.CursorCol == 17)
+                {
+                    host.Send("<F12>");
+
+                }
+
+                if (PK01 != "PK01")
+                {
+                    TeemTalkClose();
+                    MessageBox.Show("Пользователь " + login + " не имеет доступа в Special Service Order Search Criteria", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 //Открываем excel файл
                 string xlFileName = ofd.FileName; //имя нашего Excel файла
@@ -187,32 +205,17 @@ namespace Status_changer
 
 
 
-                    //Объявление переменных///////////////////////////////////////////////////////////////////////////////////////////////////////
-                    
+                    ////////////////////////////////////////////////////////////////Объявление переменных/////////////////////////////////////////////////////////////////////////
+
                     //CName - Caller Name
                     var CName = "0";
                     //TelNo - Telephone No
                     var TelNo = "0";
-
-                    //SrCrit - Search Criteria из колонки acc (A)
-                    var excelSrCrit = ObjWorkSheet.get_Range("A" + colnum, Type.Missing).Value2;
-                    if (excelSrCrit == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row "+ colnum + " - No SrCrit data");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-
-                    string SrCrit = excelSrCrit.ToString();
-                    
-
-
-
+                                      
+                                                         
                     //Select - Selection
                     var Select = "41";
-                    //SSstat - SS status
-                    var SSstat = "BK";
+                    
 
                     //Con - Connote из колонки CN Number
                     var excelcon = ObjWorkSheet.get_Range("B" + colnum, Type.Missing).Value2;
@@ -224,15 +227,32 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string Con = excelcon.ToString();
-                    
+                    if (Con.Length != 9)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con +" - Bad CN Number Lenght");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
 
+                    //SrCrit - Search Criteria из колонки acc (A)
+                    var excelSrCrit = ObjWorkSheet.get_Range("A" + colnum, Type.Missing).Value2;
+                    if (excelSrCrit == null)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No SrCrit data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+
+                    string SrCrit = excelSrCrit.ToString();
 
                     //RecName - Receaver Name
                     var excelRecName = ObjWorkSheet.get_Range("C" + colnum, Type.Missing).Value2;
                     if (excelRecName == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Receaver Name");
+                        UserLog.WriteLine(Con + " - No Receaver Name");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -244,7 +264,7 @@ namespace Status_changer
                     if (excelRecAddr == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - Receaver Address");
+                        UserLog.WriteLine(Con + " - No Receaver Address");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -259,7 +279,7 @@ namespace Status_changer
                     if (excelRecTown == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Receaver Town");
+                        UserLog.WriteLine(Con + " - No Receaver Town");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -270,7 +290,7 @@ namespace Status_changer
                     if (excelRecPost == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Receaver Postcode");
+                        UserLog.WriteLine(Con + " - No Receaver Postcode");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -282,7 +302,7 @@ namespace Status_changer
                     if (excelGdsDesk == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No GDS Description");
+                        UserLog.WriteLine(Con + " - No GDS Description");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -293,7 +313,7 @@ namespace Status_changer
                     if (excelWeightKG == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Weight data");
+                        UserLog.WriteLine(Con + " - No Weight data");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -306,7 +326,7 @@ namespace Status_changer
                     if (excelItems == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Items data");
+                        UserLog.WriteLine(Con + " - No Items data");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }                    
@@ -328,7 +348,7 @@ namespace Status_changer
                     if (CollDate_v == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Collection Date");
+                        UserLog.WriteLine(Con + " - No Collection Date");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -363,7 +383,7 @@ namespace Status_changer
                     if (DelDate_v == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Delivery Date");
+                        UserLog.WriteLine(Con + " - No Delivery Date");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -385,7 +405,7 @@ namespace Status_changer
                     if (dCt.Date > dDt.Date)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - The Collection date cannot be earlier than the Delivery Date");
+                        UserLog.WriteLine(Con + " - The Collection date cannot be earlier than the Delivery Date");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -399,14 +419,30 @@ namespace Status_changer
 
 
                     //Dev - Dev = s
-                    var Div = "s";
+                    var excelDiv = ObjWorkSheet.get_Range("M" + colnum, Type.Missing).Value2;                    
+                    if (excelDiv == null)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No Div");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+                    string Div = excelDiv.ToString();
+                    if (Div != "s" || Div != "S")// Div всегда должен быть s, нужна ли проверка или можно дать значение s?
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Bad Div");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+
 
                     //Prod - Prod
                     var excelProd = ObjWorkSheet.get_Range("N" + colnum, Type.Missing).Value2;
                     if (excelProd == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Prod date");
+                        UserLog.WriteLine(Con + " - No Prod date");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -417,7 +453,7 @@ namespace Status_changer
                     if (excelPayer == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("#Row " + colnum + " - No Payer data");
+                        UserLog.WriteLine(Con + " - No Payer data");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -515,11 +551,7 @@ namespace Status_changer
                         LCDL_Qt = excel_LCLPU_Qt.ToString();
                     }
 
-
-
-                    //Insur - Insurance         ???????????????            
-                    //Handling                  ???????????????
-
+                    
                     //Revao
                     var excelRevao = ObjWorkSheet.get_Range("Y" + colnum, Type.Missing).Value2;
                     string Revao;
@@ -533,6 +565,7 @@ namespace Status_changer
                     }
                     var Revao_n = "43";
 
+
                     //Disc
                     var excelDisc = ObjWorkSheet.get_Range("Z" + colnum, Type.Missing).Value2;
                     string Disc;
@@ -545,7 +578,45 @@ namespace Status_changer
                         Disc = excelDisc.ToString();
                     }
                     var Disc_n = "7";
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+                    //Sale
+                    var excelSale = ObjWorkSheet.get_Range("AA" + colnum, Type.Missing).Value2;
+                    if (excelSale == null)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No Sale data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+                    string Sale = excelPayer.ToString();
+
+
+                    //SSstat - SS status
+                    //var SSstat = "BK";
+                    var excelSSstat = ObjWorkSheet.get_Range("AB" + colnum, Type.Missing).Value2;
+                    if (excelSSstat == null)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No Status data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+                    string SSstat = excelPayer.ToString();
+                    if(SSstat != "bk+ve" 
+                        || SSstat != "bk" 
+                        || SSstat != "BK+VE"
+                        || SSstat != "bk+VE"
+                        || SSstat != "BK+ve")
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Wrong Status Data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+
+
+                    /////////////////////////////////////////////////////////////Data Entry//////////////////////////////////////////////////////////////////////////
 
                     ForAwait(20, 1, "Customer Service System");
                     Thread.Sleep(600);
