@@ -153,7 +153,7 @@ namespace Status_changer
 
                 //Проверка на возможность доступа в PK01
                 var PK01 = "";
-                PK01= disp.ScreenData[73, 2, 4];
+                PK01= disp.ScreenData[1, 73, 4];
 
                 if (PK01 != "PK01")
                 {
@@ -653,8 +653,19 @@ namespace Status_changer
                     ForAwaitCol(8);
                     Thread.Sleep(600);
                     host.Send(Con);// CN Number
-                    logger.Debug("Con:" + Con, this.Text); //LOG
                     host.Send("<ENTER>");
+
+                    var PK0105 = "";//PK0105 - ошибка  NO ORDERS FOUND MATCHING THE SEARCH CRITERIA
+                    PK01 = disp.ScreenData[2, 24, 6];
+                    if(PK0105 == "PK0105")
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - NO ORDERS FOUND MATCHING THE SEARCH CRITERIA");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }                    
+                    logger.Debug("Con:" + Con, this.Text); //LOG
+
 
                     ForAwaitCol(7);
                     host.Send("<TAB>");
