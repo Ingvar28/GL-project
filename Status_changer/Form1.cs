@@ -146,16 +146,16 @@ namespace Status_changer
                 logger.Debug("PK01", this.Text); //LOG
                 host.Send("<ENTER>");
                 
-                if (teemApp.CurrentSession.Display.CursorCol == 17)
+                if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
                 {
                     host.Send("<F12>");
                 }
 
                 //Проверка на возможность доступа в PK01
-                var PK01 = "";
-                PK01= disp.ScreenData[1, 73, 4];
+                //var PK01 = "";
+                //PK01= disp.ScreenData[1, 73, 4];
 
-                if (PK01 != "PK01")
+                if (disp.ScreenData[1, 73, 4] != "PK01")
                 {
                     TeemTalkClose();
                     MessageBox.Show("Пользователь " + login + " не имеет доступа в Special Service Order Search Criteria", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -650,14 +650,16 @@ namespace Status_changer
                     //host.Send(SSstat);// = BK                        
                     //Thread.Sleep(100);
 
-                    ForAwaitCol(8);
+                    ForAwaitCol(21);
                     Thread.Sleep(600);
-                    host.Send(Con);// CN Number
+                    host.Send(Con);// Вводим CN Number
                     host.Send("<ENTER>");
 
-                    var PK0105 = "";//PK0105 - ошибка  NO ORDERS FOUND MATCHING THE SEARCH CRITERIA
-                    PK01 = disp.ScreenData[2, 24, 6];
-                    if(PK0105 == "PK0105")
+
+                    //Провеорка на ошибку PK0105 -  NO ORDERS FOUND MATCHING THE SEARCH CRITERIA
+                    //var PK0105 = "";
+                    //PK0105 = disp.ScreenData[2, 24, 6];
+                    if (disp.ScreenData[2, 24, 6] == "PK0105")
                     {
                         UserLog = new StreamWriter(destUserLog, true);
                         UserLog.WriteLine(Con + " - NO ORDERS FOUND MATCHING THE SEARCH CRITERIA");
@@ -666,6 +668,48 @@ namespace Status_changer
                     }                    
                     logger.Debug("Con:" + Con, this.Text); //LOG
 
+
+                    ForAwaitCol(15);// Проверка соответствия Div и Prod                    
+                    var CheckDiv = "";
+                    var CheckProd = "";
+                    short j = 1;
+
+                    do
+                    {
+                        short col = (Int16)(9 + j);
+                        CheckDiv = disp.ScreenData[41, col, 1];
+                        CheckProd = disp.ScreenData[45, col, 3];
+
+                        if(CheckDiv == Div && CheckProd == Prod)
+                        {
+                            host.Send(j.ToString());
+                            host.Send("<ENTER>");
+                            break;//Прерывание цикла Do While
+                        }                            
+                        j++;
+
+                    } while (CheckDiv.Trim() != "");
+
+                    if (CheckDiv != Div && CheckProd != Prod)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine("Such" + Con + " with specified Div and Prod not found ");
+                        UserLog.Close();
+
+                        host.Send("<F12>");
+                        host.Send("<F12>");
+                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        {
+                            host.Send("<F12>");
+                        }
+
+                        continue; //переход к следующей итерации FOR
+                    }
+
+                        host.Send("1");
+                        host.Send("<ENTER>");
+                        Thread.Sleep(2000);
+                    
 
                     ForAwaitCol(7);
                     host.Send("<TAB>");
