@@ -323,17 +323,29 @@ namespace Status_changer
                     }
                     string GdsDesk = excelGdsDesk.ToString();
 
-                    //WeightKG - Weight KG
-                    var excelWeightKG = ObjWorkSheet.get_Range("I" + colnum, Type.Missing).Value2;// Изменил колонку на I
-                    if (excelWeightKG == null)
+                    ////WeightKG - Weight KG
+                    //var excelWeightKG = ObjWorkSheet.get_Range("I" + colnum, Type.Missing).Value2;// Изменил колонку на I
+                    //if (excelWeightKG == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No Weight data");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string WeightKG = excelWeightKG.ToString();
+
+
+                    //Weight - Weight 
+                    var excelWeight = ObjWorkSheet.get_Range("H" + colnum, Type.Missing).Value2;
+                    if (excelWeight == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
                         UserLog.WriteLine(Con + " - No Weight data");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
-                    string WeightKG = excelWeightKG.ToString();
-                    //WeightG - Weight G
+                    string Weight = excelWeight.ToString();
+                   
 
 
                     //Items
@@ -383,11 +395,11 @@ namespace Status_changer
 
 
 
-                    //CollTime - Collection Time = 1100
-                    var CollTime = "1100";
+                    //CollTime - Collection Time = 0900
+                    var CollTime = "0900";
 
-                    //CollTimeTo - Collection Time To = 1400
-                    var CollTimeTo = "1400";
+                    //CollTimeTo - Collection Time To = 1800
+                    var CollTimeTo = "1800";
 
 
 
@@ -426,8 +438,8 @@ namespace Status_changer
                     }
 
 
-                    //DelTime - Delivery Time = 2359
-                    var Deltime = "2359";
+                    //DelTime - Delivery Time = 0900
+                    var Deltime = "0900";
 
                     //DelTimeTo - Delivery Time To = 2359
                     var DeltimeTo = "2359";
@@ -604,7 +616,7 @@ namespace Status_changer
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
-                    string Sale = excelPayer.ToString();
+                    string Sale = excelSale.ToString();
 
 
                     //SSstat - SS status
@@ -617,10 +629,11 @@ namespace Status_changer
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
-                    string SSstat = excelPayer.ToString();
+                    string SSstat = excelSSstat.ToString();
 
                     if(SSstat != "bk+ve" 
-                        || SSstat != "bk" 
+                        || SSstat != "bk"
+                        || SSstat == "BK"
                         || SSstat != "BK+VE"
                         || SSstat != "bk+VE"
                         || SSstat != "BK+ve")
@@ -835,13 +848,186 @@ namespace Status_changer
                     host.Send("+<TAB>");
                     Thread.Sleep(600);
 
-                    ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или BK+VE
 
 
-                    
+                    ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или BK+VE                    
+
+                    //if (SSstat != "bk+ve"
+                    //    || SSstat != "bk"
+                    //    || SSstat != "BK+VE"
+                    //    || SSstat != "bk+VE"
+                    //    || SSstat != "BK+ve")
+
+                    if (SSstat == "bk" || SSstat == "BK")
+                    {
+                        host.Send(SSstat); // SS Status
+                        Thread.Sleep(600);
+
+                        ForAwaitCol(62);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(7);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(46);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(7);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(46);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(13);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(50);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(14);
+                        host.Send("<END>");
+                        Thread.Sleep(600);
+                        host.Send(Weight); // Weight Только КГ!!!!
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(28);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(55);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(73);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(8);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(20);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(37);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(53);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(70);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(20);
+                        host.Send("<END>");
+                        Thread.Sleep(600);
+                        host.Send(CollDate); // Collection Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitRow(16);
+                        host.Send(CollTime); // =0900  
+                        Thread.Sleep(600);
+                        ForAwaitCol(31);
+                        host.Send(CollTimeTo); // =1800
+                        host.Send("<TAB>");
 
 
-                    ForAwaitRow(9);
+
+                        ForAwaitCol(51);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(22);
+                        host.Send(DelDate); // Delivery Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(40);
+                        host.Send(Deltime); // =0900  
+                        Thread.Sleep(600);
+
+                        ForAwaitCol(56);
+                        host.Send(DelDate); // Delivery Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(74);
+                        host.Send(DeltimeTo); // =2359  
+                        Thread.Sleep(600);
+
+                        host.Send("<F10>");
+                        
+                        ForAwaitCol(15);
+                        host.Send("<F5>");
+
+                        ForAwaitCol(7);
+                        host.Send("<F4>");
+
+                        ForAwaitCol(23);
+                        host.Send("43");
+                        host.Send("<ENTER>");
+                                                
+                        ForAwaitCol(7);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(15);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(28);
+                        host.Send("100"); // Revao = 100
+                        Thread.Sleep(600);
+                        host.Send("<ENTER>");
+
+                        host.Send("<F12>");
+                        Thread.Sleep(2000);
+                        host.Send("<F12>");
+                        Thread.Sleep(600);
+                        host.Send("<F12>");
+                        Thread.Sleep(2000);
+
+                        ForAwaitCol(73);
+                        host.Send("<ENTER>"); // 1й раз
+                        Thread.Sleep(1000);
+                        host.Send("<ENTER>");// 2й раз
+                        Thread.Sleep(1000);
+                        host.Send("<ENTER>");// 3й раз
+                        Thread.Sleep(1000);
+                        host.Send("<ENTER>");// 4й раз
+                        Thread.Sleep(1000);
+                        host.Send("<ENTER>");// 5й раз
+                        Thread.Sleep(1000);
+                        host.Send("<ENTER>");// 6й раз
+
+                        ForAwaitCol(62);
+                        host.Send("y");
+                        Thread.Sleep(600);
+                        host.Send("<ENTER>");
+
+                        Thread.Sleep(600);
+                        host.Send("<F12>");
+                        Thread.Sleep(600);
+
+                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        {
+                            host.Send("<F12>");
+                            Thread.Sleep(600);
+                        }
+
+
+                    }
+                    else if(SSstat != "BK+VE"
+                        || SSstat != "bk+VE"
+                        || SSstat != "BK+ve")
+                    {
+
+
+
+
+                    }
+
+
+
+
+
+
+
+                        ForAwaitRow(9);
                     Thread.Sleep(600);
                     host.Send(RecName); // Receaver Name
                     Thread.Sleep(600);
@@ -885,7 +1071,7 @@ namespace Status_changer
                     host.Send("<TAB>");
 
                     ForAwaitCol(14);
-                    host.Send(WeightKG); // Weight Только КГ!!!!
+                    host.Send(Weight); // Weight Только КГ!!!!
                     host.Send("<TAB>");
                     ForAwaitCol(28);
                     //host.Send(WeightG);
