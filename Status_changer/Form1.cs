@@ -1009,6 +1009,10 @@ namespace Status_changer
                             Thread.Sleep(600);
                         }
 
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Done");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
 
                     }
                     else if(SSstat != "BK+VE"
