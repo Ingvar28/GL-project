@@ -706,16 +706,79 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
 
-                        host.Send("1");
-                        host.Send("<ENTER>");
-                        Thread.Sleep(2000);
-                    
+                    Thread.Sleep(2000);
 
                     ForAwaitCol(7);
+                    host.Send("S");
+                    host.Send("<ENTER>");
+                    Thread.Sleep(600);
+
+                    ForAwaitCol(21);
                     host.Send("<TAB>");
 
-                    ForAwaitCol(46);
-                    host.Send("<F4>");
+                    ForAwaitCol(39);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(52);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(75);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(8);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(47);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(69);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(20);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(31);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(40);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(51);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(20);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(20);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(75);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(20);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(27);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(34);
+                    host.Send("<TAB>");
+
+
+                    ForAwaitCol(24);
+                    host.Send("<F4>");//Переход в меню отправки
+                    
+                    ForAwaitCol(43);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(62);
+                    host.Send("<TAB>");
+
+                    ForAwaitCol(7);
+                    host.Send("<F4>");//Переход к сверке по аккаунту
+                    Thread.Sleep(1000);
+
+
 
                     ForAwaitRow(9);
                     Thread.Sleep(600);
