@@ -234,17 +234,33 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
 
-                    //SrCrit - Search Criteria из колонки acc (A)
-                    var excelSrCrit = ObjWorkSheet.get_Range("A" + colnum, Type.Missing).Value2;
-                    if (excelSrCrit == null)
+                    //Acc - Account No из колонки acc (A)
+                    var excelAcc = ObjWorkSheet.get_Range("A" + colnum, Type.Missing).Value2;
+                    if (excelAcc == null)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No SrCrit data");
+                        UserLog.WriteLine(Con + " - No Acc data");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
+                    
+                    string CheckAcc = excelAcc.ToString();// Добавление 0 к Acc No
+                    string Acc = "";
+                    if(CheckAcc.Length < 9)
+                    {
+                        
+                        do
+                        {
+                            
+                            Acc = "0" + CheckAcc;
 
-                    string SrCrit = excelSrCrit.ToString();
+                        } while (CheckAcc.Length == 9);
+                    }
+                    else
+                    {
+                        CheckAcc = Acc;
+                    }
+                    
 
                     //RecName - Receaver Name
                     var excelRecName = ObjWorkSheet.get_Range("C" + colnum, Type.Missing).Value2;
@@ -602,6 +618,7 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string SSstat = excelPayer.ToString();
+
                     if(SSstat != "bk+ve" 
                         || SSstat != "bk" 
                         || SSstat != "BK+VE"
@@ -609,7 +626,7 @@ namespace Status_changer
                         || SSstat != "BK+ve")
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - Wrong Status Data");
+                        UserLog.WriteLine(Con + " - Wrong Status");
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
@@ -693,20 +710,23 @@ namespace Status_changer
                     if (CheckDiv != Div && CheckProd != Prod)
                     {
                         UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine("Such" + Con + " with specified Div and Prod not found ");
+                        UserLog.WriteLine(Con + " - Such Con with specified Div and Prod not found ");
                         UserLog.Close();
 
                         host.Send("<F12>");
+                        Thread.Sleep(600);
                         host.Send("<F12>");
+                        Thread.Sleep(2000);
+
                         if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
                         {
                             host.Send("<F12>");
+                            Thread.Sleep(600);
                         }
 
                         continue; //переход к следующей итерации FOR
                     }
 
-                    Thread.Sleep(2000);
 
                     ForAwaitCol(7);
                     host.Send("S");
@@ -778,6 +798,47 @@ namespace Status_changer
                     host.Send("<F4>");//Переход к сверке по аккаунту
                     Thread.Sleep(1000);
 
+                    // Сверка по Account No
+                    var MfAcc = disp.ScreenData[13, 8, 9];
+                    if(Acc == MfAcc )
+                    {                        
+                        host.Send("<F12>");
+                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Excel Acc № " + Acc + " does not match with Mainframe Acc № " + MfAcc);
+                        UserLog.Close();
+
+                        host.Send("<F12>");
+                        Thread.Sleep(2000);
+                        host.Send("<F12>");
+                        Thread.Sleep(600);
+                        host.Send("<F12>");
+                        Thread.Sleep(2000);
+
+                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        {
+                            host.Send("<F12>");
+                            Thread.Sleep(600);
+                        }
+
+                        continue; //переход к следующей итерации FOR
+                    }
+
+                    ForAwaitCol(7);
+                    host.Send("+<TAB>");// Первое Введение Shift + TAB
+                    Thread.Sleep(600);
+
+                    ForAwaitCol(62);
+                    host.Send("+<TAB>");
+                    Thread.Sleep(600);
+
+                    ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или BK+VE
+
+
+                    
 
 
                     ForAwaitRow(9);
