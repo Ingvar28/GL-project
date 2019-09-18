@@ -860,6 +860,7 @@ namespace Status_changer
 
                     if (SSstat == "bk" || SSstat == "BK")
                     {
+                        /////////////////////////////////////////////////Начало функции BK
                         host.Send(SSstat); // SS Status
                         Thread.Sleep(600);
 
@@ -951,10 +952,16 @@ namespace Status_changer
                         host.Send(DeltimeTo); // =2359  
                         Thread.Sleep(600);
 
+                        //Вход в Tariff No
+                        ForAwaitCol(48);
                         host.Send("<F10>");
-                        
+
                         ForAwaitCol(15);
                         host.Send("<F5>");
+
+                        ////////////////////////////////////////////////////////Конец Функции BK
+                        ///
+
 
                         ForAwaitCol(7);
                         host.Send("<F4>");
@@ -1015,11 +1022,267 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
 
                     }
-                    else if(SSstat != "BK+VE"
-                        || SSstat != "bk+VE"
-                        || SSstat != "BK+ve")
+
+                    else if(SSstat != "BK+VE" || SSstat != "bk+VE" || SSstat != "BK+ve")
                     {
 
+                        /////////////////////////////////////////////////Начало функции BK
+                        host.Send(SSstat); // SS Status
+                        Thread.Sleep(600);
+
+                        ForAwaitCol(62);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(7);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(46);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(7);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(46);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(13);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(50);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(14);
+                        host.Send("<END>");
+                        Thread.Sleep(600);
+                        host.Send(Weight); // Weight Только КГ!!!!
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(28);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(55);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(73);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(8);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(20);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(37);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(53);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(70);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(20);
+                        host.Send("<END>");
+                        Thread.Sleep(600);
+                        host.Send(CollDate); // Collection Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitRow(16);
+                        host.Send(CollTime); // =0900  
+                        Thread.Sleep(600);
+                        ForAwaitCol(31);
+                        host.Send(CollTimeTo); // =1800
+                        host.Send("<TAB>");
+
+
+
+                        ForAwaitCol(51);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(22);
+                        host.Send(DelDate); // Delivery Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(40);
+                        host.Send(Deltime); // =0900  
+                        Thread.Sleep(600);
+
+                        ForAwaitCol(56);
+                        host.Send(DelDate); // Delivery Date
+                        Thread.Sleep(600);
+                        host.Send("<TAB>");
+
+                        ForAwaitCol(74);
+                        host.Send(DeltimeTo); // =2359  
+                        Thread.Sleep(600);
+
+                        //Вход в Tariff No
+                        ForAwaitCol(48);
+                        host.Send("<F10>");
+
+                        ForAwaitCol(15);
+                        host.Send("<F5>");
+
+                        ////////////////////////////////////////////////////////Конец Функции BK
+
+
+                        if (CMairVendor == null || CMairQt == null)// Если ячейки пустые, то ничего не вводить                 
+                        {
+
+                        }
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            if (disp.CursorCol == 7)
+                            {
+                                host.Send("<F4>");
+                                Thread.Sleep(600);
+                            }
+
+
+                            ForAwaitCol(23);
+                            host.Send(CMair);// =4
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send(CMairVendor); // CMairVendor
+                            Thread.Sleep(600);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send(CMairQt); // CMairQt
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
+
+                        if (LCLPU_Vendor == null || LCLPU_Qt == null)// Если ячейки пустые, то ничего не вводить                 
+                        {
+
+                        }
+                        else
+                        {
+                            //ForAwaitCol(7);
+                            //host.Send("<F4>");
+                            Thread.Sleep(1000);
+                            if (disp.CursorCol == 7)
+                            {
+                                host.Send("<F4>");
+                                Thread.Sleep(600);
+                            }
+
+                            ForAwaitCol(23);
+                            Thread.Sleep(600);
+                            host.Send(LCLPU); // =24
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send(LCLPU_Vendor); // LCLPU_Vendor
+                            Thread.Sleep(600);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send(LCLPU_Qt); // LCLPU_Qt
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
+
+                        if (LCDL_Vendor == null || LCDL_Qt == null)// Если ячейки пустые, то ничего не вводить                 
+                        {
+
+                        }
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            if (disp.CursorCol == 7)
+                            {
+                                host.Send("<F4>");
+                                Thread.Sleep(600);
+                            }
+
+                            ForAwaitCol(23);
+                            host.Send(LCDL); // =23
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send(LCLPU_Vendor); // LCDL_Vendor
+                            Thread.Sleep(600);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send(LCDL_Qt); // LCDL_Qt
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
+
+                        if (Revao == null)// Если ячейки пустые, то ничего не вводить                 
+                        {
+
+                        }
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            if (disp.CursorCol == 7)
+                            {
+                                host.Send("<F4>");
+                                Thread.Sleep(600);
+                            }
+
+                            ForAwaitCol(23);
+                            host.Send(Revao_n); // =43
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send(Revao); // Revao
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
+
+
+                        if (Disc == null)// Если ячейки пустые, то ничего не вводить                 
+                        {
+
+                        }
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            if (disp.CursorCol == 7)
+                            {
+                                host.Send("<F4>");
+                                Thread.Sleep(600);
+                            }
+
+                            ForAwaitCol(23);
+                            host.Send(Disc_n); // =7
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send(Disc); // Disc
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
 
 
 
@@ -1029,9 +1292,7 @@ namespace Status_changer
 
 
 
-
-
-                        ForAwaitRow(9);
+                    ForAwaitRow(9);
                     Thread.Sleep(600);
                     host.Send(RecName); // Receaver Name
                     Thread.Sleep(600);
