@@ -145,9 +145,9 @@ namespace Status_changer
                 host.Send("PK01");
                 logger.Debug("PK01", this.Text); //LOG
                 host.Send("<ENTER>");
+                Thread.Sleep(2200);
 
-                
-                if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
                 {
                     host.Send("<F12>");
                 }
@@ -156,7 +156,7 @@ namespace Status_changer
                 //var PK01 = "";
                 //PK01= disp.ScreenData[1, 73, 4];
 
-                if (disp.ScreenData[1, 73, 4] != "PK01")
+                if (disp.ScreenData[73, 1, 4] != "PK01")
                 {
                     TeemTalkClose();
                     MessageBox.Show("Пользователь " + login + " не имеет доступа в Special Service Order Search Criteria", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -249,80 +249,94 @@ namespace Status_changer
                     string Acc = "";
                     if(CheckAcc.Length < 9)
                     {
-                        
-                        do
-                        {
-                            
-                            Acc = "0" + CheckAcc;
+                        if (CheckAcc.Length == 8) { Acc = "0" + CheckAcc; }
+                        else if (CheckAcc.Length == 7) { Acc = "00" + CheckAcc; }
+                        else if (CheckAcc.Length == 6) { Acc = "000" + CheckAcc; }
+                        else if (CheckAcc.Length == 5) { Acc = "0000" + CheckAcc; }
+                        else if (CheckAcc.Length == 4) { Acc = "00000" + CheckAcc; }
+                        //short z = 1;
+                        //do
+                        //{
+                        //    string zero = "0";
+                        //    Acc = zero * z + CheckAcc;
 
-                        } while (CheckAcc.Length == 9);
+                        //    z++
+
+                        //} while (Acc.Length != 9);
                     }
-                    else
+                    else if (CheckAcc.Length == 9)
                     {
                         CheckAcc = Acc;
                     }
+                    else
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Acc has to much symbols");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
                     
 
-                    //RecName - Receaver Name
-                    var excelRecName = ObjWorkSheet.get_Range("C" + colnum, Type.Missing).Value2;
-                    if (excelRecName == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Receaver Name");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string RecName = excelRecName.ToString();
+                    ////RecName - Receaver Name
+                    //var excelRecName = ObjWorkSheet.get_Range("C" + colnum, Type.Missing).Value2;
+                    //if (excelRecName == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No Receaver Name");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string RecName = excelRecName.ToString();
                     
 
-                    //RecAddr - Receaver Address
-                    var excelRecAddr = ObjWorkSheet.get_Range("D" + colnum, Type.Missing).Value2;
-                    if (excelRecAddr == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Receaver Address");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string RecAddr = excelRecAddr.ToString();
-                    if (RecAddr.Length > 20)
-                    {
-                        RecAddr = RecAddr.Substring(0, 30);// ограничивание накладной по количеству знаков 30
-                    }
+                    ////RecAddr - Receaver Address
+                    //var excelRecAddr = ObjWorkSheet.get_Range("D" + colnum, Type.Missing).Value2;
+                    //if (excelRecAddr == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No Receaver Address");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string RecAddr = excelRecAddr.ToString();
+                    //if (RecAddr.Length > 20)
+                    //{
+                    //    RecAddr = RecAddr.Substring(0, 30);// ограничивание накладной по количеству знаков 30
+                    //}
 
-                    //RecTown - Receaver Town
-                    var excelRecTown = ObjWorkSheet.get_Range("E" + colnum, Type.Missing).Value2;
-                    if (excelRecTown == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Receaver Town");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string RecTown = excelRecTown.ToString();
+                    ////RecTown - Receaver Town
+                    //var excelRecTown = ObjWorkSheet.get_Range("E" + colnum, Type.Missing).Value2;
+                    //if (excelRecTown == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No Receaver Town");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string RecTown = excelRecTown.ToString();
 
-                    //RecPost - Receaver Postcode
-                    var excelRecPost = ObjWorkSheet.get_Range("F" + colnum, Type.Missing).Value2;
-                    if (excelRecPost == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Receaver Postcode");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string RecPost = excelRecPost.ToString();
+                    ////RecPost - Receaver Postcode
+                    //var excelRecPost = ObjWorkSheet.get_Range("F" + colnum, Type.Missing).Value2;
+                    //if (excelRecPost == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No Receaver Postcode");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string RecPost = excelRecPost.ToString();
 
 
-                    //GdsDesk - GDS Desc  
-                    var excelGdsDesk = ObjWorkSheet.get_Range("G" + colnum, Type.Missing).Value2;
-                    if (excelGdsDesk == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No GDS Description");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string GdsDesk = excelGdsDesk.ToString();
+                    ////GdsDesk - GDS Desc  
+                    //var excelGdsDesk = ObjWorkSheet.get_Range("G" + colnum, Type.Missing).Value2;
+                    //if (excelGdsDesk == null)
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - No GDS Description");
+                    //    UserLog.Close();
+                    //    continue; //переход к следующей итерации FOR
+                    //}
+                    //string GdsDesk = excelGdsDesk.ToString();
 
                     ////WeightKG - Weight KG
                     //var excelWeightKG = ObjWorkSheet.get_Range("I" + colnum, Type.Missing).Value2;// Изменил колонку на I
@@ -346,7 +360,12 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string Weight = excelWeight.ToString();
-                   
+
+                    if (Weight.Contains(","))
+                    {
+                        Weight = Weight.Replace(",", ".");
+                    }
+
 
 
                     //Items
@@ -361,12 +380,12 @@ namespace Status_changer
                     string Items = excelItems.ToString();
 
 
-                    //Length - 10
-                    var Length = "10";
-                    //Widht - 10
-                    var Widht = "10";
-                    //Height - 10
-                    var Height = "10";
+                    ////Length - 10
+                    //var Length = "10";
+                    ////Widht - 10
+                    //var Widht = "10";
+                    ////Height - 10
+                    //var Height = "10";
 
 
                     //Экспорт даты забора CollDate - Collection Date
@@ -456,7 +475,7 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string Div = excelDiv.ToString();
-                    if (Div != "s" || Div != "S")// Div всегда должен быть s, нужна ли проверка или можно дать значение s?
+                    if (Div != "s" && Div != "S")// Div всегда должен быть s, нужна ли проверка или можно дать значение s?
                     {
                         UserLog = new StreamWriter(destUserLog, true);
                         UserLog.WriteLine(Con + " - Bad Div");
@@ -476,7 +495,8 @@ namespace Status_changer
                     }
                     string Prod = excelProd.ToString();
 
-                    //Payer - Payer
+
+                    //Payer - Payer = S || R
                     var excelPayer = ObjWorkSheet.get_Range("O" + colnum, Type.Missing).Value2;
                     if (excelPayer == null)
                     {
@@ -486,9 +506,17 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string Payer = excelPayer.ToString();
+                    if (Payer != "s" && Payer != "S"
+                        && Payer != "r" && Payer != "R")// Payer всегда должен быть s или r
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Bad Payer");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
 
-                    //Stack - Stackable = y
-                    var Stack = "y";
+                    ///Stack - Stackable = y
+                    //var Stack = "y";
 
 
                     //CMair
@@ -517,6 +545,11 @@ namespace Status_changer
                     else
                     {
                         CMairQt = excel_CMairQt.ToString();
+                    }
+
+                    if (CMairQt.Contains(","))
+                    {
+                        CMairQt = CMairQt.Replace(",", ".");
                     }
 
 
@@ -549,6 +582,11 @@ namespace Status_changer
                         LCLPU_Qt = excel_LCLPU_Qt.ToString();
                     }
 
+                    if (LCLPU_Qt.Contains(","))
+                    {
+                        LCLPU_Qt = LCLPU_Qt.Replace(",", ".");
+                    }
+
 
                     //LCDl - Local Deilvery
 
@@ -576,11 +614,18 @@ namespace Status_changer
                     }
                     else
                     {
-                        LCDL_Qt = excel_LCLPU_Qt.ToString();
+                        LCDL_Qt = excel_LCDL_Qt.ToString();
                     }
 
-                    
+                    if (LCDL_Qt.Contains(","))
+                    {
+                        LCDL_Qt = LCDL_Qt.Replace(",", ".");
+                    }
+
+
                     //Revao
+                    var Revao_n = "43";
+
                     var excelRevao = ObjWorkSheet.get_Range("Y" + colnum, Type.Missing).Value2;
                     string Revao;
                     if (excelRevao == null)// Если ячейки пустые, то ничего не вводить                 
@@ -591,10 +636,17 @@ namespace Status_changer
                     {
                         Revao = excelRevao.ToString();
                     }
-                    var Revao_n = "43";
+
+                    if (Revao.Contains(","))
+                    {
+                        Revao = Revao.Replace(",", ".");
+                    }
+
 
 
                     //Disc
+                    var Disc_n = "7";
+
                     var excelDisc = ObjWorkSheet.get_Range("Z" + colnum, Type.Missing).Value2;
                     string Disc;
                     if (excelDisc == null)// Если ячейки пустые, то ничего не вводить                 
@@ -605,7 +657,18 @@ namespace Status_changer
                     {
                         Disc = excelDisc.ToString();
                     }
-                    var Disc_n = "7";
+
+                    if (Disc.Contains(","))
+                    {
+                        Disc = Disc.Replace(",", ".");
+                    }
+
+                    if (Disc.Contains("-"))
+                    {
+                        Disc = Disc.Replace("-", "");
+                    }
+                    
+
 
 
                     //Sale
@@ -617,10 +680,65 @@ namespace Status_changer
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
-                    string PreSale = excelSale.ToString();
-                    string Sale = PreSale + ".00";
+                    string PreSale = excelSale.ToString();                   
+                    string Sale = "";
+                    //Sale_MF.length = 14
+                    if (PreSale.Contains(",") || PreSale.Contains("."))
+                    {
+                        if(PreSale.Contains(","))
+                        {
+                            PreSale = PreSale.Replace(",", ".");
+                        }
+                          
+                        if (PreSale.Length == 12) { Sale = "  " + PreSale; }
+                        else if (PreSale.Length == 11) { Sale = "   " + PreSale; }
+                        else if (PreSale.Length == 10) { Sale = "    " + PreSale; }
+                        else if (PreSale.Length == 9) { Sale = "     " + PreSale; }
+                        else if (PreSale.Length == 8) { Sale = "      " + PreSale; }
+                        else if (PreSale.Length == 7) { Sale = "       " + PreSale; }
+                        else if (PreSale.Length == 6) { Sale = "        " + PreSale; }
+                        else if (PreSale.Length == 5) { Sale = "         " + PreSale; }
+                        else if (PreSale.Length == 4) { Sale = "          " + PreSale; }
+                        else if (PreSale.Length == 3) { Sale = "           " + PreSale; }
+                        else
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - Sale too low");
+                            UserLog.Close();
+                            continue; //переход к следующей итерации FOR
+                        }
+                    }
 
+                    else if (PreSale.Length <= 10)
+                    {
+                                                
+                        if (PreSale.Length == 10) { Sale = " " + PreSale + ".00"; }
+                        else if (PreSale.Length == 9) { Sale = "  " + PreSale + ".00"; }
+                        else if (PreSale.Length == 8) { Sale = "   " + PreSale + ".00"; }
+                        else if (PreSale.Length == 7) { Sale = "    " + PreSale + ".00"; }
+                        else if (PreSale.Length == 6) { Sale = "     " + PreSale + ".00"; }
+                        else if (PreSale.Length == 5) { Sale = "      " + PreSale + ".00"; }
+                        else if (PreSale.Length == 4) { Sale = "       " + PreSale + ".00"; }
+                        else if (PreSale.Length == 3) { Sale = "        " + PreSale + ".00"; }
+                        else
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - Sale too low");
+                            UserLog.Close();
+                            continue; //переход к следующей итерации FOR
+                        }
+                        
+                    }
+                    
+                    else
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Sale has to much symbols");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
 
+                    
                     //string CheckAcc = excelAcc.ToString();// Добавление 0 к Acc No
                     //string Acc = "";
                     //if (CheckAcc.Length < 9)
@@ -652,11 +770,11 @@ namespace Status_changer
                     string SSstat = excelSSstat.ToString();
 
                     if(SSstat != "bk+ve" 
-                        || SSstat != "bk"
-                        || SSstat == "BK"
-                        || SSstat != "BK+VE"
-                        || SSstat != "bk+VE"
-                        || SSstat != "BK+ve")
+                        && SSstat != "bk"
+                        && SSstat == "BK"
+                        && SSstat != "BK+VE"
+                        && SSstat != "bk+VE"
+                        && SSstat != "BK+ve")
                     {
                         UserLog = new StreamWriter(destUserLog, true);
                         UserLog.WriteLine(Con + " - Wrong Status");
@@ -751,7 +869,7 @@ namespace Status_changer
                         host.Send("<F12>");
                         Thread.Sleep(2000);
 
-                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
                         {
                             host.Send("<F12>");
                             Thread.Sleep(600);
@@ -851,7 +969,7 @@ namespace Status_changer
                         host.Send("<F12>");
                         Thread.Sleep(2000);
 
-                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
                         {
                             host.Send("<F12>");
                             Thread.Sleep(600);
@@ -861,27 +979,22 @@ namespace Status_changer
                     }
 
                     ForAwaitCol(7);
-                    host.Send("+<TAB>");// Первое Введение Shift + TAB
+                    host.Send("<Shift+TAB>");// Первое Введение Shift + TAB
                     Thread.Sleep(600);
 
                     ForAwaitCol(62);
-                    host.Send("+<TAB>");
+                    host.Send("<Shift+TAB>");// Первое Введение Shift + TAB
                     Thread.Sleep(600);
 
 
 
                     ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или BK+VE                    
 
-                    //if (SSstat != "bk+ve"
-                    //    || SSstat != "bk"
-                    //    || SSstat != "BK+VE"
-                    //    || SSstat != "bk+VE"
-                    //    || SSstat != "BK+ve")
 
                     if (SSstat == "bk" || SSstat == "BK")
                     {
                         /////////////////////////////////////////////////Начало функции BK
-                        host.Send(SSstat); // SS Status
+                        host.Send("bk"); // SS Status
                         Thread.Sleep(600);
 
                         ForAwaitCol(62);
@@ -973,7 +1086,7 @@ namespace Status_changer
                         Thread.Sleep(600);
 
                         //Вход в Tariff No
-                        ForAwaitCol(48);
+                        ForAwaitCol(7);
                         host.Send("<F10>");
 
                         ForAwaitCol(15);
@@ -1030,7 +1143,7 @@ namespace Status_changer
                         host.Send("<F12>");
                         Thread.Sleep(600);
 
-                        if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                        if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
                         {
                             host.Send("<F12>");
                             Thread.Sleep(600);
@@ -1047,7 +1160,7 @@ namespace Status_changer
                     {
 
                         /////////////////////////////////////////////////Начало функции BK
-                        host.Send(SSstat); // SS Status
+                        host.Send("bk"); // SS Status
                         Thread.Sleep(600);
 
                         ForAwaitCol(62);
@@ -1139,7 +1252,7 @@ namespace Status_changer
                         Thread.Sleep(600);
 
                         //Вход в Tariff No
-                        ForAwaitCol(48);
+                        ForAwaitCol(7);
                         host.Send("<F10>");
 
                         ForAwaitCol(15);
@@ -1304,7 +1417,7 @@ namespace Status_changer
                             host.Send("<ENTER>");
                         }
 
-                        if(disp.ScreenData[9, 21, 13] == Sale)/////////////////////////////////// Нужны тесты!!!
+                        if(disp.ScreenData[9, 21, 14] == Sale)/////////////////////////////////// Нужны тесты!!!
                         {
                             ForAwaitCol(7);
                             host.Send("<F12>");
@@ -1334,6 +1447,8 @@ namespace Status_changer
 
                             ForAwaitCol(15);
                             host.Send("1");
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
 
                             //////////////////////////////////////Функция Прохода по меню
                             ForAwaitCol(7);
@@ -1365,20 +1480,20 @@ namespace Status_changer
                             ForAwaitCol(20);
                             host.Send("<TAB>");
 
-                            ForAwaitCol(31);
-                            host.Send("<TAB>");
+                            //ForAwaitCol(31);
+                            //host.Send("<TAB>");
 
-                            ForAwaitCol(40);
-                            host.Send("<TAB>");
+                            //ForAwaitCol(40);
+                            //host.Send("<TAB>");
 
-                            ForAwaitCol(51);
-                            host.Send("<TAB>");
+                            //ForAwaitCol(51);
+                            //host.Send("<TAB>");
 
-                            ForAwaitCol(20);
-                            host.Send("<TAB>");
+                            //ForAwaitCol(20);
+                            //host.Send("<TAB>");
 
-                            ForAwaitCol(20);
-                            host.Send("<TAB>");
+                            //ForAwaitCol(20);
+                            //host.Send("<TAB>");
 
                             ForAwaitCol(75);
                             host.Send("<TAB>");
@@ -1388,7 +1503,7 @@ namespace Status_changer
 
                             ForAwaitCol(27);
                             host.Send("<TAB>");
-
+                             
                             ForAwaitCol(34);
                             host.Send("<TAB>");
 
@@ -1401,7 +1516,6 @@ namespace Status_changer
                             ForAwaitCol(43);//Ввод статуса VE
                             host.Send("ve");
 
-                            ForAwaitCol(62);
                             host.Send("<ENTER>"); // 1й раз
                             Thread.Sleep(1000);
                             host.Send("<ENTER>");// 2й раз
@@ -1411,6 +1525,8 @@ namespace Status_changer
                             host.Send("<ENTER>");// 4й раз
                             Thread.Sleep(1000);
                             host.Send("<ENTER>");// 5й раз
+                            Thread.Sleep(1000);
+                            host.Send("<ENTER>");// 6й раз
 
                             ForAwaitCol(62);
                             host.Send("y");
@@ -1421,7 +1537,7 @@ namespace Status_changer
                             host.Send("<F12>");
                             Thread.Sleep(600);
 
-                            if (teemApp.CurrentSession.Display.CursorCol == 17)// Пункт 7.1 Окно, которое нужно закрыть
+                            if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
                             {
                                 host.Send("<F12>");
                                 Thread.Sleep(600);
@@ -1444,10 +1560,12 @@ namespace Status_changer
                             host.Send("<F12>");
                             Thread.Sleep(600);
                             host.Send("<F12>");
-                                                     
+                            Thread.Sleep(600);
+                            host.Send("<F12>");
+
 
                             UserLog = new StreamWriter(destUserLog, true);
-                            UserLog.WriteLine(Con + " - Done");
+                            UserLog.WriteLine(Con + " - total cost"+ disp.ScreenData[9, 21, 14] +" is not equal to Sale "+Sale);
                             UserLog.Close();
                             continue; //переход к следующей итерации FOR
                         }
