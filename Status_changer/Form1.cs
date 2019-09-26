@@ -275,7 +275,32 @@ namespace Status_changer
                         UserLog.Close();
                         continue; //переход к следующей итерации FOR
                     }
-                    
+
+                    //SSstat - SS status
+                    //var SSstat = "BK";
+                    var excelSSstat = ObjWorkSheet.get_Range("AB" + colnum, Type.Missing).Value2;
+                    if (excelSSstat == null)
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No Status data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+                    string SSstat = excelSSstat.ToString();
+
+                    if (SSstat != "bk+ve"
+                        && SSstat != "bk"
+                        && SSstat == "BK"
+                        && SSstat != "BK+VE"
+                        && SSstat != "bk+VE"
+                        && SSstat != "BK+ve")
+                    {
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Wrong Status");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
+                    }
+
 
                     ////RecName - Receaver Name
                     //var excelRecName = ObjWorkSheet.get_Range("C" + colnum, Type.Missing).Value2;
@@ -287,7 +312,7 @@ namespace Status_changer
                     //    continue; //переход к следующей итерации FOR
                     //}
                     //string RecName = excelRecName.ToString();
-                    
+
 
                     ////RecAddr - Receaver Address
                     //var excelRecAddr = ObjWorkSheet.get_Range("D" + colnum, Type.Missing).Value2;
@@ -365,6 +390,7 @@ namespace Status_changer
                     {
                         Weight = Weight.Replace(",", ".");
                     }
+
 
 
 
@@ -494,6 +520,8 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
                     }
                     string Prod = excelProd.ToString();
+                    
+
 
 
                     //Payer - Payer = S || R
@@ -545,12 +573,14 @@ namespace Status_changer
                     else
                     {
                         CMairQt = excel_CMairQt.ToString();
+
+                        if (CMairQt.Contains(","))
+                        {
+                            CMairQt = CMairQt.Replace(",", ".");
+                        }
                     }
 
-                    if (CMairQt.Contains(","))
-                    {
-                        CMairQt = CMairQt.Replace(",", ".");
-                    }
+                    
 
 
 
@@ -580,19 +610,21 @@ namespace Status_changer
                     else
                     {
                         LCLPU_Qt = excel_LCLPU_Qt.ToString();
+
+                        if (LCLPU_Qt.Contains(","))
+                        {
+                            LCLPU_Qt = LCLPU_Qt.Replace(",", ".");
+                        }
                     }
 
-                    if (LCLPU_Qt.Contains(","))
-                    {
-                        LCLPU_Qt = LCLPU_Qt.Replace(",", ".");
-                    }
+                    
 
 
                     //LCDl - Local Deilvery
 
                     var LCDL = "23";
 
-                    //LCLPU_Vendor - Vendor
+                    //LCDL_Vendor - Vendor
                     var excel_LCDL_Vendor = ObjWorkSheet.get_Range("W" + colnum, Type.Missing).Value2;
                     string LCDL_Vendor;
                     if (excel_LCDL_Vendor == null)
@@ -601,11 +633,11 @@ namespace Status_changer
                     }
                     else
                     {
-                        LCDL_Vendor = excel_LCLPU_Vendor.ToString();
+                        LCDL_Vendor = excel_LCDL_Vendor.ToString();
                     }
 
 
-                    //LCLPU_Qt - Quote Amount
+                    //LCDL_Qt - Quote Amount
                     var excel_LCDL_Qt = ObjWorkSheet.get_Range("X" + colnum, Type.Missing).Value2;
                     string LCDL_Qt;
                     if (excel_LCDL_Qt == null)
@@ -615,12 +647,14 @@ namespace Status_changer
                     else
                     {
                         LCDL_Qt = excel_LCDL_Qt.ToString();
+
+                        if (LCDL_Qt.Contains(","))
+                        {
+                            LCDL_Qt = LCDL_Qt.Replace(",", ".");
+                        }
                     }
 
-                    if (LCDL_Qt.Contains(","))
-                    {
-                        LCDL_Qt = LCDL_Qt.Replace(",", ".");
-                    }
+                    
 
 
                     //Revao
@@ -635,12 +669,14 @@ namespace Status_changer
                     else
                     {
                         Revao = excelRevao.ToString();
+
+                        if (Revao.Contains(","))
+                        {
+                            Revao = Revao.Replace(",", ".");
+                        }
                     }
 
-                    if (Revao.Contains(","))
-                    {
-                        Revao = Revao.Replace(",", ".");
-                    }
+                    
 
 
 
@@ -656,87 +692,97 @@ namespace Status_changer
                     else
                     {
                         Disc = excelDisc.ToString();
+
+                        if (Disc.Contains(","))
+                        {
+                            Disc = Disc.Replace(",", ".");
+                        }
+
+                        if (Disc.Contains("-"))
+                        {
+                            Disc = Disc.Replace("-", "");
+                        }
                     }
 
-                    if (Disc.Contains(","))
-                    {
-                        Disc = Disc.Replace(",", ".");
-                    }
-
-                    if (Disc.Contains("-"))
-                    {
-                        Disc = Disc.Replace("-", "");
-                    }
+                    
                     
 
 
 
                     //Sale
                     var excelSale = ObjWorkSheet.get_Range("AA" + colnum, Type.Missing).Value2;
+                    string Sale = "";
                     if (excelSale == null)
                     {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Sale data");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string PreSale = excelSale.ToString();                   
-                    string Sale = "";
-                    //Sale_MF.length = 14
-                    if (PreSale.Contains(",") || PreSale.Contains("."))
-                    {
-                        if(PreSale.Contains(","))
-                        {
-                            PreSale = PreSale.Replace(",", ".");
-                        }
-                          
-                        if (PreSale.Length == 12) { Sale = "  " + PreSale; }
-                        else if (PreSale.Length == 11) { Sale = "   " + PreSale; }
-                        else if (PreSale.Length == 10) { Sale = "    " + PreSale; }
-                        else if (PreSale.Length == 9) { Sale = "     " + PreSale; }
-                        else if (PreSale.Length == 8) { Sale = "      " + PreSale; }
-                        else if (PreSale.Length == 7) { Sale = "       " + PreSale; }
-                        else if (PreSale.Length == 6) { Sale = "        " + PreSale; }
-                        else if (PreSale.Length == 5) { Sale = "         " + PreSale; }
-                        else if (PreSale.Length == 4) { Sale = "          " + PreSale; }
-                        else if (PreSale.Length == 3) { Sale = "           " + PreSale; }
-                        else
+                        if (SSstat != "bk" || SSstat == "BK")
                         {
                             UserLog = new StreamWriter(destUserLog, true);
-                            UserLog.WriteLine(Con + " - Sale too low");
-                            UserLog.Close();
-                            continue; //переход к следующей итерации FOR
-                        }
-                    }
-
-                    else if (PreSale.Length <= 10)
-                    {
-                                                
-                        if (PreSale.Length == 10) { Sale = " " + PreSale + ".00"; }
-                        else if (PreSale.Length == 9) { Sale = "  " + PreSale + ".00"; }
-                        else if (PreSale.Length == 8) { Sale = "   " + PreSale + ".00"; }
-                        else if (PreSale.Length == 7) { Sale = "    " + PreSale + ".00"; }
-                        else if (PreSale.Length == 6) { Sale = "     " + PreSale + ".00"; }
-                        else if (PreSale.Length == 5) { Sale = "      " + PreSale + ".00"; }
-                        else if (PreSale.Length == 4) { Sale = "       " + PreSale + ".00"; }
-                        else if (PreSale.Length == 3) { Sale = "        " + PreSale + ".00"; }
-                        else
-                        {
-                            UserLog = new StreamWriter(destUserLog, true);
-                            UserLog.WriteLine(Con + " - Sale too low");
+                            UserLog.WriteLine(Con + " - No Sale data");
                             UserLog.Close();
                             continue; //переход к следующей итерации FOR
                         }
                         
                     }
-                    
                     else
                     {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - Sale has to much symbols");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
+                        string PreSale = excelSale.ToString();
+                        
+                        //Sale_MF.length = 14
+                        if (PreSale.Contains(",") || PreSale.Contains("."))
+                        {
+                            if (PreSale.Contains(","))
+                            {
+                                PreSale = PreSale.Replace(",", ".");
+                            }
+
+                            if (PreSale.Length == 12) { Sale = "  " + PreSale; }
+                            else if (PreSale.Length == 11) { Sale = "   " + PreSale; }
+                            else if (PreSale.Length == 10) { Sale = "    " + PreSale; }
+                            else if (PreSale.Length == 9) { Sale = "     " + PreSale; }
+                            else if (PreSale.Length == 8) { Sale = "      " + PreSale; }
+                            else if (PreSale.Length == 7) { Sale = "       " + PreSale; }
+                            else if (PreSale.Length == 6) { Sale = "        " + PreSale; }
+                            else if (PreSale.Length == 5) { Sale = "         " + PreSale; }
+                            else if (PreSale.Length == 4) { Sale = "          " + PreSale; }
+                            else if (PreSale.Length == 3) { Sale = "           " + PreSale; }
+                            else
+                            {
+                                UserLog = new StreamWriter(destUserLog, true);
+                                UserLog.WriteLine(Con + " - Sale too low");
+                                UserLog.Close();
+                                continue; //переход к следующей итерации FOR
+                            }
+                        }
+                        else if (PreSale.Length <= 10)
+                        {
+
+                            if (PreSale.Length == 10) { Sale = " " + PreSale + ".00"; }
+                            else if (PreSale.Length == 9) { Sale = "  " + PreSale + ".00"; }
+                            else if (PreSale.Length == 8) { Sale = "   " + PreSale + ".00"; }
+                            else if (PreSale.Length == 7) { Sale = "    " + PreSale + ".00"; }
+                            else if (PreSale.Length == 6) { Sale = "     " + PreSale + ".00"; }
+                            else if (PreSale.Length == 5) { Sale = "      " + PreSale + ".00"; }
+                            else if (PreSale.Length == 4) { Sale = "       " + PreSale + ".00"; }
+                            else if (PreSale.Length == 3) { Sale = "        " + PreSale + ".00"; }
+                            else
+                            {
+                                UserLog = new StreamWriter(destUserLog, true);
+                                UserLog.WriteLine(Con + " - Sale too low");
+                                UserLog.Close();
+                                continue; //переход к следующей итерации FOR
+                            }
+
+                        }
+                        else
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - Sale has to much symbols");
+                            UserLog.Close();
+                            continue; //переход к следующей итерации FOR
+                        }
+
                     }
+                    
 
                     
                     //string CheckAcc = excelAcc.ToString();// Добавление 0 к Acc No
@@ -757,30 +803,7 @@ namespace Status_changer
                     //}
 
 
-                    //SSstat - SS status
-                    //var SSstat = "BK";
-                    var excelSSstat = ObjWorkSheet.get_Range("AB" + colnum, Type.Missing).Value2;
-                    if (excelSSstat == null)
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - No Status data");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
-                    string SSstat = excelSSstat.ToString();
-
-                    if(SSstat != "bk+ve" 
-                        && SSstat != "bk"
-                        && SSstat == "BK"
-                        && SSstat != "BK+VE"
-                        && SSstat != "bk+VE"
-                        && SSstat != "BK+ve")
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - Wrong Status");
-                        UserLog.Close();
-                        continue; //переход к следующей итерации FOR
-                    }
+                    
 
 
                     /////////////////////////////////////////////////////////////Data Entry//////////////////////////////////////////////////////////////////////////
@@ -1216,14 +1239,14 @@ namespace Status_changer
 
                         ForAwaitCol(20);
                         host.Send("<END>");
-                        Thread.Sleep(600);
+                        
                         host.Send(CollDate); // Collection Date
                         Thread.Sleep(600);
                         host.Send("<TAB>");
 
                         ForAwaitRow(16);
                         host.Send(CollTime); // =0900  
-                        Thread.Sleep(600);
+                        
                         ForAwaitCol(31);
                         host.Send(CollTimeTo); // =1800
                         host.Send("<TAB>");
@@ -1240,7 +1263,7 @@ namespace Status_changer
 
                         ForAwaitCol(40);
                         host.Send(Deltime); // =0900  
-                        Thread.Sleep(600);
+                        
 
                         ForAwaitCol(56);
                         host.Send(DelDate); // Delivery Date
@@ -1249,21 +1272,61 @@ namespace Status_changer
 
                         ForAwaitCol(74);
                         host.Send(DeltimeTo); // =2359  
-                        Thread.Sleep(600);
+                        
 
                         //Вход в Tariff No
                         ForAwaitCol(7);
                         host.Send("<F10>");
+
+                        if (disp.ScreenData[7, 10, 5] == "REVAO")
+                        {
+                            ForAwaitCol(15);
+                            host.Send("1");
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+
+                            ForAwaitCol(7);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(15);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(28);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(48);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(67);
+                            host.Send("<TAB>");
+
+                            ForAwaitCol(77);
+                            host.Send("Y");
+                            Thread.Sleep(600);
+                            host.Send("<ENTER>");
+                        }
 
                         ForAwaitCol(15);
                         host.Send("<F5>");
 
                         ////////////////////////////////////////////////////////Конец Функции BK
 
-
-                        if (CMairVendor == null || CMairQt == null)// Если ячейки пустые, то ничего не вводить                 
+                        
+                        if (CMairVendor == null && CMairQt == null)// Если ячейки пустые, то ничего не вводить                 
                         {
-
+                                                                                  
+                        }
+                        else if (CMairVendor == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No CMair Vendor data");
+                            UserLog.Close();
+                        }
+                        else if (CMairQt == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No CMair Quote Amount");
+                            UserLog.Close();
                         }
                         else
                         {
@@ -1293,9 +1356,21 @@ namespace Status_changer
                             host.Send("<ENTER>");
                         }
 
-                        if (LCLPU_Vendor == null || LCLPU_Qt == null)// Если ячейки пустые, то ничего не вводить                 
+                        if (LCLPU_Vendor == null && LCLPU_Qt == null)// Если ячейки пустые, то ничего не вводить                 
                         {
-
+                            
+                        }
+                        else if (LCLPU_Vendor == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No LCLPU Vendor data");
+                            UserLog.Close();
+                        }
+                        else if (LCLPU_Qt == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No LCLPU Quote Amount");
+                            UserLog.Close();
                         }
                         else
                         {
@@ -1327,9 +1402,21 @@ namespace Status_changer
                             host.Send("<ENTER>");
                         }
 
-                        if (LCDL_Vendor == null || LCDL_Qt == null)// Если ячейки пустые, то ничего не вводить                 
+                        if (LCDL_Vendor == null && LCDL_Qt == null)// Если ячейки пустые, то ничего не вводить                 
                         {
-
+                            
+                        }
+                        else if (LCDL_Vendor == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No LCDL Vendor data");
+                            UserLog.Close();
+                        }
+                        else if (LCDL_Qt == null)
+                        {
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No LCDL Quote Amount");
+                            UserLog.Close();
                         }
                         else
                         {
@@ -1348,7 +1435,7 @@ namespace Status_changer
                             host.Send("<TAB>");
 
                             ForAwaitCol(15);
-                            host.Send(LCLPU_Vendor); // LCDL_Vendor
+                            host.Send(LCDL_Vendor); // LCDL_Vendor
                             Thread.Sleep(600);
                             host.Send("<TAB>");
 
@@ -1360,7 +1447,9 @@ namespace Status_changer
 
                         if (Revao == null)// Если ячейки пустые, то ничего не вводить                 
                         {
-
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No Revao data");
+                            UserLog.Close();
                         }
                         else
                         {
@@ -1390,7 +1479,9 @@ namespace Status_changer
 
                         if (Disc == null)// Если ячейки пустые, то ничего не вводить                 
                         {
-
+                            UserLog = new StreamWriter(destUserLog, true);
+                            UserLog.WriteLine(Con + " - No Disc data");
+                            UserLog.Close();
                         }
                         else
                         {
@@ -1417,7 +1508,8 @@ namespace Status_changer
                             host.Send("<ENTER>");
                         }
 
-                        if(disp.ScreenData[9, 21, 14] == Sale)/////////////////////////////////// Нужны тесты!!!
+                        string NetSale = disp.ScreenData[9, 22, 14];
+                        if (NetSale == Sale)/////////////////////////////////// Нужны тесты!!!
                         {
                             ForAwaitCol(7);
                             host.Send("<F12>");
@@ -1565,7 +1657,7 @@ namespace Status_changer
 
 
                             UserLog = new StreamWriter(destUserLog, true);
-                            UserLog.WriteLine(Con + " - total cost"+ disp.ScreenData[9, 21, 14] +" is not equal to Sale "+Sale);
+                            UserLog.WriteLine(Con + " - total cost: "+NetSale+ " is not equal to Sale: "+Sale);
                             UserLog.Close();
                             continue; //переход к следующей итерации FOR
                         }
