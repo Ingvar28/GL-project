@@ -204,18 +204,18 @@ namespace Status_changer
                     logger.Debug(colnum, this.Text); //LOG
 
 
-
+                    #region variables /////Объявление переменных//////////
                     ////////////////////////////////////////////////////////////////Объявление переменных/////////////////////////////////////////////////////////////////////////
 
                     //CName - Caller Name
                     //var CName = "0";
                     //TelNo - Telephone No
                     //var TelNo = "0";
-                                      
-                                                         
+
+
                     //Select - Selection
                     //var Select = "41";
-                    
+
 
                     //Con - Connote из колонки CN Number
                     var excelcon = ObjWorkSheet.get_Range("B" + colnum, Type.Missing).Value2;
@@ -782,9 +782,9 @@ namespace Status_changer
                         }
 
                     }
-                    
 
-                    
+                    #endregion//
+
                     //string CheckAcc = excelAcc.ToString();// Добавление 0 к Acc No
                     //string Acc = "";
                     //if (CheckAcc.Length < 9)
@@ -803,43 +803,12 @@ namespace Status_changer
                     //}
 
 
-                    
+
 
 
                     /////////////////////////////////////////////////////////////Data Entry//////////////////////////////////////////////////////////////////////////
 
-                    //ForAwait(20, 1, "Customer Service System");
-                    //Thread.Sleep(600);
-                    //host.Send(CName);// 0
                     
-                    //Thread.Sleep(100); //костыль
-                    //host.Send("<TAB>");
-                    //host.Send(TelNo);// 0 
-                    //Thread.Sleep(100); //костыль
-                    //host.Send("<TAB>");
-                    //host.Send(TelNo);// 0 
-                    //Thread.Sleep(100); //костыль
-                    //host.Send("<TAB>");
-
-                    //ForAwaitCol(19);
-                    //Thread.Sleep(600);
-                    //host.Send(SrCrit);
-                    //logger.Debug("SrCrit:" + SrCrit, this.Text); //LOG
-                    //Thread.Sleep(500);
-                    //host.Send("<ENTER>");
-                    //Thread.Sleep(1000);
-                    //host.Send("<F12>");
-
-                    ////ForAwaitCol(13);
-                    ////Thread.Sleep(600);
-                    ////host.Send(Select);// =41                        
-                    ////host.Send("<ENTER>");
-
-
-                    //ForAwait(31, 8, "SS Status");
-                    //Thread.Sleep(600);
-                    //host.Send(SSstat);// = BK                        
-                    //Thread.Sleep(100);
 
                     ForAwaitCol(21);
                     Thread.Sleep(600);
@@ -1508,7 +1477,7 @@ namespace Status_changer
                             host.Send("<ENTER>");
                         }
 
-                        string NetSale = disp.ScreenData[9, 22, 14];
+                        string NetSale = disp.ScreenData[9, 21, 14];
                         if (NetSale == Sale)/////////////////////////////////// Нужны тесты!!!
                         {
                             ForAwaitCol(7);
@@ -1538,6 +1507,7 @@ namespace Status_changer
 
 
                             ForAwaitCol(15);
+                            Thread.Sleep(600);
                             host.Send("1");
                             Thread.Sleep(600);
                             host.Send("<ENTER>");
@@ -1571,23 +1541,12 @@ namespace Status_changer
 
                             ForAwaitCol(20);
                             host.Send("<TAB>");
+                            Thread.Sleep(600);
 
-                            //ForAwaitCol(31);
-                            //host.Send("<TAB>");
-
-                            //ForAwaitCol(40);
-                            //host.Send("<TAB>");
-
-                            //ForAwaitCol(51);
-                            //host.Send("<TAB>");
-
-                            //ForAwaitCol(20);
-                            //host.Send("<TAB>");
-
-                            //ForAwaitCol(20);
-                            //host.Send("<TAB>");
+                            
 
                             ForAwaitCol(75);
+                            Thread.Sleep(1000);
                             host.Send("<TAB>");
 
                             ForAwaitCol(20);
