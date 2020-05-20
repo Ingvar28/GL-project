@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,12 +47,6 @@ namespace Status_changer
                 else if (textBox_pw.Text == "")
                 {
                     MessageBox.Show("Вы не ввели пароль", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                if(radioButton_BK.Checked == false && radioButton_VE.Checked == false)
-                {
-                    MessageBox.Show("Выберите режим работы", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -284,37 +278,27 @@ namespace Status_changer
 
                     //SSstat - SS status
                     //var SSstat = "BK";
-                    //var excelSSstat = ObjWorkSheet.get_Range("AB" + colnum, Type.Missing).Value2;
-                    //if (excelSSstat == null)
-                    //{
-                    //    UserLog = new StreamWriter(destUserLog, true);
-                    //    UserLog.WriteLine(Con + " - No Status data");
-                    //    UserLog.Close();
-                    //    continue; //переход к следующей итерации FOR
-                    //}
-                    //string SSstat = excelSSstat.ToString();
-
-                    //if (SSstat != "bk+ve"
-                    //    && SSstat != "bk"
-                    //    && SSstat == "BK"
-                    //    && SSstat != "BK+VE"
-                    //    && SSstat != "bk+VE"
-                    //    && SSstat != "BK+ve")
-                    //{
-                    //    UserLog = new StreamWriter(destUserLog, true);
-                    //    UserLog.WriteLine(Con + " - Wrong Status");
-                    //    UserLog.Close();
-                    //    continue; //переход к следующей итерации FOR
-                    //}
-
-                    string SSstat;
-                    if (radioButton_BK.Checked == true)
+                    var excelSSstat = ObjWorkSheet.get_Range("AB" + colnum, Type.Missing).Value2;
+                    if (excelSSstat == null)
                     {
-                        SSstat = "bk";
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - No Status data");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
                     }
-                    else
+                    string SSstat = excelSSstat.ToString();
+
+                    if (SSstat != "bk+ve"
+                        && SSstat != "bk"
+                        && SSstat == "BK"
+                        && SSstat != "BK+VE"
+                        && SSstat != "bk+VE"
+                        && SSstat != "BK+ve")
                     {
-                        SSstat = "ve";
+                        UserLog = new StreamWriter(destUserLog, true);
+                        UserLog.WriteLine(Con + " - Wrong Status");
+                        UserLog.Close();
+                        continue; //переход к следующей итерации FOR
                     }
 
 
@@ -1168,10 +1152,10 @@ namespace Status_changer
 
 
 
-                    ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или VE                    
+                    ForAwaitCol(43);//Проверка на то какой статус проставлять - BK или BK+VE                    
 
 
-                    if (SSstat == "bk")
+                    if (SSstat == "bk" || SSstat == "BK")
                     {
                         /////////////////////////////////////////////////Начало функции BK
                         host.Send("bk"); // SS Status
@@ -1340,8 +1324,8 @@ namespace Status_changer
                         continue; //переход к следующей итерации FOR
 
                     }
-                    else
-                    //else if(SSstat != "BK+VE" || SSstat != "bk+VE" || SSstat != "BK+ve")
+
+                    else if(SSstat != "BK+VE" || SSstat != "bk+VE" || SSstat != "BK+ve")
                     {
 
                         /////////////////////////////////////////////////Начало функции BK
