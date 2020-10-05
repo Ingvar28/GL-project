@@ -929,7 +929,7 @@ namespace Status_changer
                     }
 
 
-                    if (CheckRevCost == "      ")// Проверка значения Revao & Cost
+                    if (CheckRevCost == "      ")// Проверка значения Revao & Cost равно ли 100,00
                     {
                         //////////////////////////////////////Функция Прохода по меню
                         ForAwaitCol(7);
@@ -988,7 +988,8 @@ namespace Status_changer
                         ForAwaitCol(34);
                         host.Send("<TAB>");
                     }
-                    else if (CheckRevCost == "100.00")
+                    //else if (CheckRevCost == "100.00")
+                    else
                     {
                         //////////////////////////////////////Функция Прохода по меню СОКРАЩЕННАЯ
                         ForAwaitCol(7);
@@ -1036,25 +1037,25 @@ namespace Status_changer
                         ForAwaitCol(34);
                         host.Send("<TAB>");
                     }
-                    else
-                    {
-                        UserLog = new StreamWriter(destUserLog, true);
-                        UserLog.WriteLine(Con + " - Con have already entered non-compliant Revenue and Cost value ");
-                        UserLog.Close();
+                    //else
+                    //{
+                    //    UserLog = new StreamWriter(destUserLog, true);
+                    //    UserLog.WriteLine(Con + " - Con have already entered non-compliant Revenue and Cost value ");
+                    //    UserLog.Close();
 
-                        host.Send("<F12>");
-                        Thread.Sleep(600);
-                        host.Send("<F12>");
-                        Thread.Sleep(2000);
+                    //    host.Send("<F12>");
+                    //    Thread.Sleep(600);
+                    //    host.Send("<F12>");
+                    //    Thread.Sleep(2000);
 
-                        if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
-                        {
-                            host.Send("<F12>");
-                            Thread.Sleep(600);
-                        }
+                    //    if (teemApp.CurrentSession.Display.CursorCol == 25)// Пункт 7.1 Окно, которое нужно закрыть
+                    //    {
+                    //        host.Send("<F12>");
+                    //        Thread.Sleep(600);
+                    //    }
 
-                        continue; //переход к следующей итерации FOR
-                    }
+                    //    continue; //переход к следующей итерации FOR
+                    //}
 
 
 
